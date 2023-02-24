@@ -1,0 +1,80 @@
+use Timetable
+ALTER TABLE Instructor
+ADD group_id int,
+FOREIGN KEY (group_id) REFERENCES Groups(group_id);
+
+
+ALTER TABLE Students
+FOREIGN KEY (dept_id) REFERENCES Departments(dept_id);
+
+
+CREATE TABLE Active_Status(
+	student_id int,
+	student_status bit,
+	instructor_id int,
+	timeslot_id INT,
+	record_time datetime,
+	FOREIGN KEY (student_id) REFERENCES Students(student_id),
+	FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id),
+	FOREIGN KEY (timeslot_id) REFERENCES Timeslots(timeslot_id),
+);
+
+ALTER TABLE Course_Schedule
+ADD group_id int,
+FOREIGN KEY (group_id) REFERENCES Groups(group_id);
+
+
+
+CREATE TABLE Groups(
+	group_id INT PRIMARY KEY,
+	group_name varchar(50),
+)
+
+CREATE TABLE Students(
+	student_id INT PRIMARY KEY,
+	student_name VARCHAR(50),
+	student_gender bit,
+	student_email VARCHAR(100),
+	student_dob date,
+	group_id INT,
+	dept_id INT,
+);
+CREATE TABLE Departments(
+	dept_id INT PRIMARY KEY,
+	dept_name VARCHAR(50),
+);
+
+CREATE TABLE Courses (
+  course_id INT PRIMARY KEY,
+  course_name VARCHAR(50),
+  course_code VARCHAR(10) UNIQUE
+);
+
+CREATE TABLE Instructor (
+  instructor_id INT PRIMARY KEY,
+  instructor_name VARCHAR(50),
+  instructor_email VARCHAR(50),
+);
+
+CREATE TABLE Rooms (
+  room_id INT PRIMARY KEY,
+  room_name VARCHAR(50)
+);
+
+CREATE TABLE Timeslots (
+  timeslot_id INT PRIMARY KEY,
+  day_of_week VARCHAR(10),
+  start_time TIME,
+  end_time TIME
+);
+
+CREATE TABLE Course_Schedule (
+  course_id INT,
+  professor_id INT,
+  room_id INT,
+  timeslot_id INT,
+  FOREIGN KEY (course_id) REFERENCES Courses(course_id),
+  FOREIGN KEY (professor_id) REFERENCES Professors(professor_id),
+  FOREIGN KEY (room_id) REFERENCES Rooms(room_id),
+  FOREIGN KEY (timeslot_id) REFERENCES Timeslots(timeslot_id)
+);
